@@ -1,4 +1,4 @@
-importScripts("/precache-manifest.9c099a79156aec1631a1924ec28d941e.js", "https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
+importScripts("/precache-manifest.8db55f07f007224053c6e805ec5a619c.js", "https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
 
 //Only if you use google analytics and wants to send the offline views
 workbox.googleAnalytics.initialize()
