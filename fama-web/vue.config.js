@@ -1,4 +1,5 @@
 module.exports = {
+    outputDir: '../firebase/public',
     pwa: {
         themeColor: '#8BB8A8',
         backgroundColor: '#B47EB3',
