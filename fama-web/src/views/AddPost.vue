@@ -1,5 +1,66 @@
 <template>
     <section>
-        add
+        <textarea v-model="text" placeholder="Write something cool..." maxlength="300"/>
+        <button @click="add">ADD</button>
+        <!--button>CAMERA</button-->
     </section>
 </template>
+
+<script>
+import firebase from '@/firebaseinit'
+const db = firebase.firestore();
+
+export default {
+    data(){
+        return {
+            text: ''
+        }
+    },
+    methods: {
+        async add(){
+            if(!this.text){
+                return;
+            }
+            const post = {
+                text: this.text,
+                timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                comments: []
+            }
+            const ref = await db.collection('posts').add(post);
+            this.$router.push(`post/${ref.id}`);
+        }
+    }
+}
+</script>
+
+<style scoped>
+section{
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+textarea{
+    flex: 1;
+    border: none;
+    resize: none;
+    padding: 25px;
+    background: linear-gradient(rgba(247, 128, 0, 0.65), var(--main-color-orange));
+    font: inherit;
+    font-size: 1.2em;
+}
+
+button{
+    background: none;
+    border: none;
+    box-shadow: 0 -1px 1px rgba(0,0,0,0.12), 
+                0 -2px 2px rgba(0,0,0,0.12), 
+                0 -4px 4px rgba(0,0,0,0.12),
+                0 -8px 8px rgba(0,0,0,0.12),
+                0 -16px 16px rgba(0,0,0,0.12);
+    padding: 20px;
+    color: #333;
+    font: inherit;
+    font-weight: bold;
+    cursor: pointer;
+}
+</style>

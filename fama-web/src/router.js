@@ -17,7 +17,7 @@ export default new Router({
       component: () => import('./views/Profile.vue')
     },
     {
-      path: '/post:id',
+      path: '/post/:id',
       component: () => import('./views/Post.vue')
     },
     {

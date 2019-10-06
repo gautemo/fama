@@ -32,7 +32,8 @@ nav{
   display: flex;
   box-shadow: 0 1px 1px rgba(0,0,0,0.12), 
               0 2px 2px rgba(0,0,0,0.12), 
-              0 4px 4px rgba(0,0,0,0.12)
+              0 4px 4px rgba(0,0,0,0.12);
+  z-index: 2;
 }
 
 nav a{
