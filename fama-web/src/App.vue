@@ -1,31 +1,52 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
+  <main>
+    <nav>
+      <router-link to="/">SOCIAL FEED</router-link>
+      <router-link to="/profile">PROFILE</router-link>
+    </nav>
     <router-view/>
-  </div>
+  </main>
 </template>
 
 <style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-#nav {
-  padding: 30px;
+@import url('https://fonts.googleapis.com/css?family=Roboto+Slab&display=swap');
+
+:root{
+  --main-color-green: #0f7173ff;
+  --main-color-red: #f15156ff;
+  --main-color-orange: #f77f00ff;
 }
 
-#nav a {
+body{
+  margin: 0;
+  font-family: 'Roboto Slab', serif;
+}
+
+main{
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+nav{
+  display: flex;
+  box-shadow: 0 1px 1px rgba(0,0,0,0.12), 
+              0 2px 2px rgba(0,0,0,0.12), 
+              0 4px 4px rgba(0,0,0,0.12)
+}
+
+nav a{
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+  text-decoration: none;
+  color: #333;
   font-weight: bold;
-  color: #2c3e50;
 }
 
-#nav a.router-link-exact-active {
-  color: #42b983;
+.router-link-exact-active{
+  border-bottom: 3px solid var(--main-color-green);
+  color: var(--main-color-green);
 }
 </style>
