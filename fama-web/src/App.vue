@@ -60,4 +60,8 @@ ul{
     margin: 0;
     padding: 0;
 }
+
+.hide{
+    visibility: hidden;
+}
 </style>

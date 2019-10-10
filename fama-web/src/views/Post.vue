@@ -1,8 +1,6 @@
 <template>
     <section>
-        <article>
-            {{post.text}}
-        </article>
+        <PostDisplay :id="$route.params.id" :post="post" :inComment="true" />
         <div class="responses">
             <ul>
                 <li v-for="comment in post.comments" :key="comment.id">
@@ -59,7 +57,8 @@ export default {
         }
     },
     components: {
-        AddButton: () => import('@/components/AddButton')
+        AddButton: () => import('@/components/AddButton'),
+        PostDisplay: () => import('@/components/PostDisplay')
     }
 }
 </script>
