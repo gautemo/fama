@@ -15,6 +15,10 @@
   --main-color-green: #0f7173ff;
   --main-color-red: #f15156ff;
   --main-color-orange: #f77f00ff;
+  --main-color-blue: #55DDE0;
+  --faded-color-red: rgba(241, 81, 86, 0.65);
+  --faded-color-orange: rgba(247, 128, 0, 0.65);
+  --faded-color-blue: rgba(85, 222, 224, 0.65);
 }
 
 body{
@@ -49,5 +53,11 @@ nav a{
 .router-link-exact-active{
   border-bottom: 3px solid var(--main-color-green);
   color: var(--main-color-green);
+}
+
+ul{
+    list-style: none;
+    margin: 0;
+    padding: 0;
 }
 </style>

@@ -68,18 +68,19 @@ export default {
 article{
     border-bottom: 5px solid white;
     padding: 25px;
-    background: linear-gradient(rgba(241, 81, 86, 0.65), var(--main-color-red));
+    background: linear-gradient(var(--faded-color-red), var(--main-color-red));
 }
 
 section{
     height: 100%;
+    overflow: auto;
     display: flex;
     flex-direction: column;
 }
 
 .responses{
     flex: 1;
-    background: linear-gradient(rgba(241, 81, 86, 0.65), var(--main-color-red));
+    background: linear-gradient(var(--faded-color-red), var(--main-color-red));
 }
 
 .input-wrapper{
@@ -98,12 +99,6 @@ input{
     width: 100%;
     border-bottom: 3px solid var(--main-color-green);
     font: inherit;
-}
-
-ul{
-    list-style: none;
-    margin: 0;
-    padding: 0;
 }
 
 li{

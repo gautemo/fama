@@ -44,7 +44,7 @@ textarea{
     border: none;
     resize: none;
     padding: 25px;
-    background: linear-gradient(rgba(247, 128, 0, 0.65), var(--main-color-orange));
+    background: linear-gradient(var(--faded-color-orange), var(--main-color-orange));
     font: inherit;
     font-size: 1.2em;
 }
