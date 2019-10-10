@@ -24,7 +24,8 @@ export default {
             const post = {
                 text: this.text,
                 timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-                comments: []
+                comments: [],
+                likes: 0
             }
             const ref = await db.collection('posts').add(post);
             this.$router.push(`post/${ref.id}`);
