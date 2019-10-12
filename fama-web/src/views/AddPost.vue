@@ -25,7 +25,8 @@ export default {
                 text: this.text,
                 timestamp: firebase.firestore.FieldValue.serverTimestamp(),
                 comments: [],
-                likes: 0
+                likes: 0,
+                reports: 0
             }
             const ref = await db.collection('posts').add(post);
             logEvent('add_post');

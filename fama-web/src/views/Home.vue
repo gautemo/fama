@@ -19,19 +19,21 @@ export default {
       d.setDate(d.getDate() - 2);
       const trace = perf.trace('initialPostsLoading');
       trace.start();
-      db.collection('posts').where('timestamp', '>', d).onSnapshot(snapshot => {
-        if(trace.state === 2){
-          trace.incrementMetric('numberOfPosts', snapshot.size);
-          trace.stop();
-        }
-        snapshot.docChanges().forEach(change => {
-          if (change.type === 'added' || change.type === 'modified') {
-            this.postsMap.set(change.doc.id, {...change.doc.data(), id: change.doc.id});
-          }else if (change.type === 'removed') {
-            this.postsMap.delete(change.doc.id);
+      db.collection('posts')
+        .where('timestamp', '>', d)
+        .onSnapshot(snapshot => {
+          if(trace.state === 2){
+            trace.incrementMetric('numberOfPosts', snapshot.size);
+            trace.stop();
           }
-          this.updates++;
-        });
+          snapshot.docChanges().forEach(change => {
+            if (change.type === 'added' || change.type === 'modified') {
+              this.postsMap.set(change.doc.id, {...change.doc.data(), id: change.doc.id});
+            }else if (change.type === 'removed') {
+              this.postsMap.delete(change.doc.id);
+            }
+            this.updates++;
+          });
       });
     },
     data(){
