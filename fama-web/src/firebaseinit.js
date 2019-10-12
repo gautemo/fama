@@ -1,6 +1,7 @@
 import * as firebase from "firebase/app";
 import "firebase/analytics";
 import "firebase/firestore";
+import "firebase/performance";
 
 const firebaseConfig = {
     apiKey: "AIzaSyBauetwfNZVpw-hi_xbDO9XtWZN7KujRhE",
@@ -14,5 +15,10 @@ const firebaseConfig = {
 };
 firebase.initializeApp(firebaseConfig);
 firebase.analytics();
+const perf = firebase.performance();
 
-export default firebase;
+const logEvent = event => {
+    firebase.analytics().logEvent(event);
+}
+
+export { logEvent, perf, firebase as default };

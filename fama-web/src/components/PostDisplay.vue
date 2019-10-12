@@ -3,18 +3,30 @@
         <p @click="toPost">{{post.text}}</p>
         <LikeButton class="like" size="30" v-on:clicked="like" :likes="post.likes"/>
         <CommentCounter v-if="!inComment" size="20" :count="post.comments.length" @click="toPost" />
+        <Report size="20" v-if="inComment && !reported" v-on:clicked="report" />
     </article>
 </template>
 
 <script>
-import firebase from '@/firebaseinit'
+import { logEvent, default as firebase } from '@/firebaseinit'
 const db = firebase.firestore();
 
 export default {
     props: ['id', 'post', 'inComment'],
+    data(){
+        return{
+            reported: false
+        }
+    },
     methods: {
       like(){
         db.collection('posts').doc(this.id).update({ likes: firebase.firestore.FieldValue.increment(1) });
+        logEvent('add_like');
+      },
+      report(){
+        db.collection('posts').doc(this.id).update({ reports: firebase.firestore.FieldValue.increment(1) });
+        logEvent('add_report');
+        this.reported = true;
       },
       toPost(){
           if(!this.inComment){
@@ -26,7 +38,8 @@ export default {
         AddButton: () => import('@/components/AddButton'),
         LikeButton: () => import('@/components/LikeButton'),
         CommentCounter: () => import('@/components/CommentCounter'),
-        PostDisplay: () => import('@/components/PostDisplay')
+        PostDisplay: () => import('@/components/PostDisplay'),
+        Report: () => import('@/components/Report')
     }
 }
 </script>
@@ -38,7 +51,7 @@ article{
     min-height: 60px;
     display: grid;
     grid-template-columns: 1fr 40px;
-    grid-template-rows: 1fr 30px;
+    grid-template-rows: auto auto;
 }
 
 p{

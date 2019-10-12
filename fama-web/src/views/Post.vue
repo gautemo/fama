@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import firebase from '@/firebaseinit'
+import { logEvent, default as firebase } from '@/firebaseinit';
 const db = firebase.firestore();
 
 const emptyUntilLoaded = {
@@ -54,6 +54,7 @@ export default {
                 transaction.update(ref, { comments: p.comments });
                 this.resp = '';
             });
+            logEvent('add_comment');
         }
     },
     components: {

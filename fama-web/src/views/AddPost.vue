@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import firebase from '@/firebaseinit'
+import { default as firebase, logEvent } from '@/firebaseinit';
 const db = firebase.firestore();
 
 export default {
@@ -28,6 +28,7 @@ export default {
                 likes: 0
             }
             const ref = await db.collection('posts').add(post);
+            logEvent('add_post');
             this.$router.push(`post/${ref.id}`);
         }
     }
