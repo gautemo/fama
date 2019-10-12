@@ -29,6 +29,8 @@ export default {
                 reports: 0
             }
             const ref = await db.collection('posts').add(post);
+            const uid = firebase.auth().currentUser.uid;
+            await db.collection('users').doc(uid).collection('mine').doc(ref.id).set({text: this.text});
             logEvent('add_post');
             this.$router.push(`post/${ref.id}`);
         }

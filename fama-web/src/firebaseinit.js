@@ -2,6 +2,7 @@ import * as firebase from "firebase/app";
 import "firebase/analytics";
 import "firebase/firestore";
 import "firebase/performance";
+import "firebase/auth";
 
 const firebaseConfig = {
     apiKey: "AIzaSyBauetwfNZVpw-hi_xbDO9XtWZN7KujRhE",
@@ -20,5 +21,15 @@ const perf = firebase.performance();
 const logEvent = event => {
     firebase.analytics().logEvent(event);
 }
+
+firebase.auth().onAuthStateChanged(function (user) {
+    if (user) {
+        console.log("signed in");
+    } else {
+        firebase.auth().signInAnonymously().catch(function (error) {
+            console.error(`${error.code}: ${error.message}`);
+        });
+    }
+});
 
 export { logEvent, perf, firebase as default };

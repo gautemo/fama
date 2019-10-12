@@ -26,7 +26,11 @@ const emptyUntilLoaded = {
 export default {
     async created(){
         db.collection('posts').doc(this.$route.params.id).onSnapshot(doc => {
-            this.post = doc.data();
+            if(doc.exists){
+                this.post = doc.data();
+            }else{
+                alert('This post has been removed');
+            }
         });
     },
     data(){
@@ -40,6 +44,8 @@ export default {
             if(!this.resp){
                 return;
             }
+            const comment = this.resp;
+            this.resp = '';
             db.runTransaction(async transaction => {
                 const ref = db.collection('posts').doc(this.$route.params.id)
                 const doc = await transaction.get(ref);
@@ -49,11 +55,12 @@ export default {
                 const p = doc.data();
                 p.comments.push({
                     id: p.comments.length,
-                    text: this.resp
+                    text: comment
                 });
                 transaction.update(ref, { comments: p.comments });
-                this.resp = '';
             });
+            const uid = firebase.auth().currentUser.uid;
+            db.collection('users').doc(uid).collection('comments').add({comment: comment, post: this.$route.params.id});
             logEvent('add_comment');
         }
     },
