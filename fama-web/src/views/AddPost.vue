@@ -24,13 +24,13 @@ export default {
             const post = {
                 text: this.text,
                 timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-                comments: [],
                 likes: 0,
-                reports: 0
+                reports: 0,
+                comments: 0
             }
             const ref = await db.collection('posts').add(post);
             const uid = firebase.auth().currentUser.uid;
-            await db.collection('users').doc(uid).collection('mine').doc(ref.id).set({text: this.text});
+            await db.collection('users').doc(uid).collection('posts').doc(ref.id).set({timestamp: firebase.firestore.FieldValue.serverTimestamp()});
             logEvent('add_post');
             this.$router.push(`post/${ref.id}`);
         }

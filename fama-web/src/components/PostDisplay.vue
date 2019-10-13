@@ -1,8 +1,8 @@
 <template>
     <article>
-        <p @click="toPost">{{post.text}}</p>
+        <p :class="{ cut: !inComment }" @click="toPost">{{post.text}}</p>
         <LikeButton class="like" size="30" v-on:clicked="like" :likes="post.likes"/>
-        <CommentCounter v-if="!inComment" size="20" :count="post.comments.length" @click="toPost" />
+        <CommentCounter v-if="!inComment" size="20" :count="post.comments" @click="toPost" />
         <Report size="20" v-if="inComment && !reported" v-on:clicked="report" />
     </article>
 </template>
@@ -55,11 +55,14 @@ article{
 }
 
 p{
+  margin: 5px 0;
+}
+
+.cut{
   display: -webkit-box;
   -webkit-line-clamp: 4;
   -webkit-box-orient: vertical;  
   overflow: hidden;
-  margin: 5px 0;
 }
 
 .like{

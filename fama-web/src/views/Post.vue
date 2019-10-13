@@ -3,7 +3,7 @@
         <PostDisplay :id="$route.params.id" :post="post" :inComment="true" />
         <div class="responses">
             <ul>
-                <li v-for="comment in post.comments" :key="comment.id">
+                <li v-for="comment in comments" :key="comment.id">
                     {{comment.text}}
                 </li>
             </ul>
@@ -25,42 +25,49 @@ const emptyUntilLoaded = {
 
 export default {
     async created(){
-        db.collection('posts').doc(this.$route.params.id).onSnapshot(doc => {
-            if(doc.exists){
-                this.post = doc.data();
-            }else{
-                alert('This post has been removed');
-            }
-        });
+        const ref = await db.collection('posts').doc(this.$route.params.id).get();
+        this.post = ref.data();
+        db.collection('posts').doc(this.$route.params.id).collection('comments')
+            .orderBy('timestamp')
+            .onSnapshot(snapshot => {
+                snapshot.docChanges().forEach(change => {
+                    if (change.type === 'added') {
+                        this.comments.push({...change.doc.data(), id: change.doc.id});
+                    }else if(change.type === 'modified'){
+                        this.comments = this.comments.map(c => {
+                            if(c.id === change.doc.id){
+                                return {...change.doc.data(), id: change.doc.id};
+                            }else{
+                                return c;
+                            }
+                        })
+                    }else if (change.type === 'removed') {
+                        this.comments = this.comments.filter(c => c.id !== change.doc.id);
+                    }
+                });
+            });
     },
     data(){
         return{
             post: emptyUntilLoaded,
-            resp: ''
+            resp: '',
+            comments: []
         }
     },
     methods:{
-        comment(){
+        async comment(){
             if(!this.resp){
                 return;
             }
-            const comment = this.resp;
+            const comment = {
+                text: this.resp,
+                timestamp: firebase.firestore.FieldValue.serverTimestamp()
+            }
+            const ref = await db.collection('posts').doc(this.$route.params.id).collection('comments').add(comment);
             this.resp = '';
-            db.runTransaction(async transaction => {
-                const ref = db.collection('posts').doc(this.$route.params.id)
-                const doc = await transaction.get(ref);
-                if(!doc.exists){
-                    //TODO: alert and navigate
-                }
-                const p = doc.data();
-                p.comments.push({
-                    id: p.comments.length,
-                    text: comment
-                });
-                transaction.update(ref, { comments: p.comments });
-            });
             const uid = firebase.auth().currentUser.uid;
-            db.collection('users').doc(uid).collection('comments').add({comment: comment, post: this.$route.params.id});
+            db.collection('users').doc(uid).collection('comments').doc(ref.id).set({postId: this.$route.params.id, timestamp: firebase.firestore.FieldValue.serverTimestamp()});
+            db.collection('posts').doc(this.$route.params.id).update({ comments: firebase.firestore.FieldValue.increment(1) });
             logEvent('add_comment');
         }
     },
