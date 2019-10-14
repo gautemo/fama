@@ -33,6 +33,7 @@ export default {
     display: flex;
     align-items: center;
     color: white;
+    cursor: pointer;
 }
 
 svg{
