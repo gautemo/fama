@@ -3,6 +3,7 @@ import "firebase/analytics";
 import "firebase/firestore";
 import "firebase/performance";
 import "firebase/auth";
+import "firebase/remote-config";
 
 const firebaseConfig = {
     apiKey: "AIzaSyBauetwfNZVpw-hi_xbDO9XtWZN7KujRhE",
@@ -17,10 +18,25 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 firebase.analytics();
 const perf = firebase.performance();
+const remoteConfig = firebase.remoteConfig();
+remoteConfig.settings = {
+    minimumFetchIntervalMillis: 1000 * 30,
+};
 
 const logEvent = event => {
     firebase.analytics().logEvent(event);
 }
+
+const remote = async name => {
+    if(remoteConfig[name]){
+        return remoteConfig[name];
+    }else{
+        await remoteConfig.fetchAndActivate();
+        return remoteConfig[name];
+    }    
+}
+
+
 
 firebase.auth().onAuthStateChanged(function (user) {
     if (user) {
@@ -32,4 +48,4 @@ firebase.auth().onAuthStateChanged(function (user) {
     }
 });
 
-export { logEvent, perf, firebase as default };
+export { logEvent, perf, remote, firebase as default };

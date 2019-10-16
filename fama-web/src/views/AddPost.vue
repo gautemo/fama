@@ -2,19 +2,23 @@
     <section>
         <textarea v-model="text" placeholder="Write something cool..." maxlength="300"/>
         <button @click="add">ADD</button>
-        <!--button>CAMERA</button-->
+        <button v-if="camera">CAMERA</button>
     </section>
 </template>
 
 <script>
-import { default as firebase, logEvent } from '@/firebaseinit';
+import { default as firebase, logEvent, remote } from '@/firebaseinit';
 const db = firebase.firestore();
 
 export default {
     data(){
         return {
-            text: ''
+            text: '',
+            camera: false
         }
+    },
+    async created(){
+        this.camera = await remote('upload_photos');
     },
     methods: {
         async add(){
