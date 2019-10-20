@@ -178,8 +178,7 @@ li:last-child{
 }
 
 .buttons button{
-    flex: 1;
-    background: var(--main-color-red);
+    flex: 1; 
     border: 1px solid rgba(128, 128, 128, 0.3);
     padding: 10px;
     margin: 5px;

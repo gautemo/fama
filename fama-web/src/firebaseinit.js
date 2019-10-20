@@ -1,6 +1,7 @@
 import * as firebase from "firebase/app";
 import "firebase/analytics";
 import "firebase/firestore";
+import "firebase/storage";
 import "firebase/performance";
 import "firebase/auth";
 import "firebase/remote-config";
@@ -20,7 +21,7 @@ firebase.analytics();
 const perf = firebase.performance();
 const remoteConfig = firebase.remoteConfig();
 remoteConfig.settings = {
-    minimumFetchIntervalMillis: 1000 * 60,
+    minimumFetchIntervalMillis: 1000 * 60 * 5,
 };
 remoteConfig.defaultConfig = ({
     'allow_reporting': 'true',

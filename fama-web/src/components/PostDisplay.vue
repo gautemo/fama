@@ -3,19 +3,25 @@
         <p :class="{ cut: !inComment }" @click="toPost">{{post.text}}</p>
         <LikeButton class="like" size="30" v-on:clicked="like" :likes="post.likes"/>
         <CommentCounter v-if="!inComment" size="20" :count="post.comments" @click="toPost" />
-        <Report size="20" v-if="inComment && !reported" v-on:clicked="report" />
+        <Report size="20" v-if="inComment && !reported && allowReport" v-on:clicked="report" />
     </article>
 </template>
 
 <script>
-import { logEvent, default as firebase } from '@/firebaseinit'
+import { logEvent, remoteConfig, default as firebase } from '@/firebaseinit'
 const db = firebase.firestore();
 
 export default {
     props: ['id', 'post', 'inComment'],
     data(){
         return{
-            reported: false
+            reported: false,
+            allowReport: true
+        }
+    },
+    created(){
+        if(this.inComment){
+            this.allowReport = remoteConfig.getBoolean('allow_reporting');
         }
     },
     methods: {
