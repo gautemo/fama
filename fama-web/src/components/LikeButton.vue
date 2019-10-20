@@ -18,6 +18,7 @@ export default {
             if(!this.liked){
                 this.liked = true;
                 this.$emit('clicked');
+                this.likes++;
             }
         }
     }

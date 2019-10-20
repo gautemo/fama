@@ -2,7 +2,7 @@
     <section>
         <textarea v-model="text" placeholder="Write something cool..." maxlength="300"/>
         <div class="add-section">
-            <button @click="add">ADD</button>
+            <button @click="add" :class="{whole: !camera}">ADD</button>
             <div class="img-btn" v-if="camera">
                 <input type="file" v-on:change="addImg" accept="image/*" id="file">
                 <label for="file" >ADD W/ IMAGE</label>
@@ -96,11 +96,12 @@ button, [type="file"] + label{
 }
 
 .add-section{
-    display: flex;
+    display: grid;
+    grid-template-columns: 50% 50%;
 }
 
-.img-btn, button{
-    flex: 1;
+.whole{
+    grid-column: span 2;
 }
 
 .img-btn{
