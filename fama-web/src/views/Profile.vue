@@ -6,7 +6,7 @@
             <div class="list posts">
                 <h3>My posts</h3>
                 <ul>
-                    <li v-for="post in posts" :key="post.id">
+                    <li v-for="post in posts" :key="post.id" @click="$router.push(`post/${post.id}`)">
                         {{post.text}}
                     </li>
                 </ul>
@@ -14,7 +14,7 @@
             <div class="list comments">
                 <h3>My comments</h3>
                 <ul>
-                    <li v-for="comment in comments" :key="comment.id">
+                    <li v-for="comment in comments" :key="comment.id" @click="$router.push(`post/${comment.postId}`)">
                         {{comment.text}}
                     </li>
                 </ul>
@@ -65,6 +65,9 @@ export default {
                 const post = await db.collection('posts').doc(doc.id).get();
                 if(post.exists){
                     const data = post.data();
+                    if(data.imgPath){
+                        data.text = '[image] ' + data.text;
+                    }
                     this.posts.push({id: doc.id, text: data.text});
                     this.cred += (data.likes * 25) + (data.comments * 10);
                 }else{
@@ -78,7 +81,7 @@ export default {
                 const postId = doc.data().postId;
                 const comment = await db.collection('posts').doc(postId).collection('comments').doc(doc.id).get();
                 if(comment.exists){
-                    this.comments.push({id: doc.id, text: comment.data().text});
+                    this.comments.push({id: doc.id, text: comment.data().text, postId: postId });
                     this.cred += 5;
                 }else{
                     //TODO: delete from user
