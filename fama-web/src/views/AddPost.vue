@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import { default as firebase, logEvent, remote } from '@/firebaseinit';
+import { default as firebase, logEvent, remoteConfig } from '@/firebaseinit';
 const db = firebase.firestore();
 
 export default {
@@ -18,7 +18,8 @@ export default {
         }
     },
     async created(){
-        this.camera = await remote('upload_photos');
+        await remoteConfig.fetchAndActivate();
+        this.camera = remoteConfig.getBoolean('upload_photos');
     },
     methods: {
         async add(){

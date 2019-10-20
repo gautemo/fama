@@ -41,9 +41,11 @@ export default {
                 this.signedIn = true;
                 this.loadPosts(user);
                 this.loadComments(user);
+                logEvent('signed_in_profile');
             }else{
                 this.signedIn = false;
                 this.showSignInUi();
+                logEvent('to_profile_sign_in_ui');
             }
         });
     },
@@ -86,6 +88,7 @@ export default {
         showSignInUi(){
             const uiConfig = {
                 autoUpgradeAnonymousUsers: true,
+                signInSuccessUrl: "/profile",
                 signInOptions: [
                     firebase.auth.GoogleAuthProvider.PROVIDER_ID,
                     firebase.auth.EmailAuthProvider.PROVIDER_ID
@@ -103,6 +106,9 @@ export default {
                         await firebase.auth().signInWithCredential(cred);
 
                         //TODO: Add all user data
+                    },
+                    uiShown: () => {
+                        document.querySelectorAll('.firebaseui-list-item>button').forEach(el => el.addEventListener('click', e => logEvent('started_email_sign_in')));
                     }
                 }
             };
@@ -113,7 +119,7 @@ export default {
         },
         deleteAccount(){
             firebase.auth().currentUser.delete().then(function() {
-            // User deleted.
+                logEvent('user_deleted');
             }).catch(function(error) {
                 alert('Could not delete account, only recently signed in accounts can be deleted. Please try to sign out, sign in and delete again.');
             });

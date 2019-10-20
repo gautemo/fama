@@ -20,27 +20,22 @@ firebase.analytics();
 const perf = firebase.performance();
 const remoteConfig = firebase.remoteConfig();
 remoteConfig.settings = {
-    minimumFetchIntervalMillis: 1000 * 30,
+    minimumFetchIntervalMillis: 1000 * 60,
 };
+remoteConfig.defaultConfig = ({
+    'allow_reporting': 'true',
+    'upload_photos': 'false'
+});
+remoteConfig.fetchAndActivate();
 
 const logEvent = event => {
     firebase.analytics().logEvent(event);
 }
 
-const remote = async name => {
-    if(remoteConfig[name]){
-        return remoteConfig[name];
-    }else{
-        await remoteConfig.fetchAndActivate();
-        return remoteConfig[name];
-    }    
-}
-
-
-
 firebase.auth().onAuthStateChanged(function (user) {
     if (user) {
         console.log("signed in");
+        firebase.analytics().setUserId(user.uid);
     } else {
         firebase.auth().signInAnonymously().catch(function (error) {
             console.error(`${error.code}: ${error.message}`);
@@ -48,4 +43,4 @@ firebase.auth().onAuthStateChanged(function (user) {
     }
 });
 
-export { logEvent, perf, remote, firebase as default };
+export { logEvent, perf, remoteConfig, firebase as default };
