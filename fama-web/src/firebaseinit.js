@@ -37,10 +37,6 @@ firebase.auth().onAuthStateChanged(function (user) {
     if (user) {
         console.log("signed in");
         firebase.analytics().setUserId(user.uid);
-    } else {
-        firebase.auth().signInAnonymously().catch(function (error) {
-            console.error(`${error.code}: ${error.message}`);
-        });
     }
 });
 
