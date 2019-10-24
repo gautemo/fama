@@ -47,7 +47,7 @@ export default {
         return this.updates && [...this.postsMap.values()].sort((a,b) => {
           const hours = (b.timestamp.seconds - a.timestamp.seconds) / 3600;
           const likes = b.likes - a.likes;
-          const comments = b.comments.length - a.comments.length;
+          const comments = b.comments - a.comments;
           return hours + likes + comments;
         });
       }

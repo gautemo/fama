@@ -6,6 +6,8 @@
 </template>
 
 <script>
+import { logEvent } from '@/firebaseinit'
+
 export default {
     props: ['size'],
     data(){
@@ -16,10 +18,14 @@ export default {
     methods: {
         click(){
             if(!this.reported){
+                logEvent('click_report');
                 const result = window.confirm(`Are you sure you want to report this? If it get's enough reports it will be removed`);
                 if(result){
+                    logEvent('add_report');
                     this.reported = true;
                     this.$emit('clicked');
+                }else{
+                    logEvent('regret_report');
                 }
             }
         }

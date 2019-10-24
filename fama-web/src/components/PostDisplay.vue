@@ -34,7 +34,7 @@ export default {
     },
     created(){
         if(this.inComment){
-            this.allowReport = remoteConfig.getBoolean('allow_reporting');
+            //this.allowReport = remoteConfig.getBoolean('allow_reporting');
         }
     },
     methods: {
@@ -44,7 +44,6 @@ export default {
       },
       report(){
         db.collection('posts').doc(this.id).update({ reports: firebase.firestore.FieldValue.increment(1) });
-        logEvent('add_report');
         this.reported = true;
       },
       toPost(){
