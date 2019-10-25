@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "676767442584",
+    "firebase_url": "https://fama-social-feed.firebaseio.com",
+    "project_id": "fama-social-feed",
+    "storage_bucket": "fama-social-feed.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:676767442584:android:aa0f39bbaeb7ef4cfb12ed",
+        "android_client_info": {
+          "package_name": "app.gaute.fama"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "676767442584-geps5d1icl6plu4qskkmihgee2uqre9p.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "app.gaute.fama",
+            "certificate_hash": "5e2769c13b105644d702932e59c714c3715c8001"
+          }
+        },
+        {
+          "client_id": "676767442584-h079pm59181f17apj6u1bjfca16imibf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyASreO97o8KVL1Ytj-6Zu35pFs4NL_LGxk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "676767442584-h079pm59181f17apj6u1bjfca16imibf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
