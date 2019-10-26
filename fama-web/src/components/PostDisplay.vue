@@ -34,7 +34,7 @@ export default {
     },
     created(){
         if(this.inComment){
-            //this.allowReport = remoteConfig.getBoolean('allow_reporting');
+            this.allowReport = remoteConfig.getBoolean('allow_reporting');
         }
     },
     methods: {
