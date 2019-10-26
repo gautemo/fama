@@ -30,12 +30,22 @@ class MainActivity : AppCompatActivity() {
         findViewById<Button>(R.id.profileButton).setOnClickListener { goTo(Screen.PROFILE) }
     }
 
-    private fun goTo(to: Screen){
+    fun goTo(to: Screen, postId: String = ""){
         if(to != screen){
             when(to){
                 Screen.HOME -> supportFragmentManager.inTransaction { add(R.id.frame, Home()) }
                 Screen.PROFILE -> supportFragmentManager.inTransaction { add(R.id.frame, Profile()) }
-                //Screen.ADD -> supportFragmentManager.inTransaction { add(R.id.frame, Profile()) }
+                Screen.ADD -> supportFragmentManager.inTransaction { add(R.id.frame, AddPost()) }
+                Screen.POST -> {
+                    if(screen == Screen.ADD) {
+                        supportFragmentManager.popBackStack()
+                    }
+                    supportFragmentManager.inTransaction {
+                        val fragment = PostView()
+                        fragment.postId = postId
+                        add(R.id.frame, fragment)
+                    }
+                }
             }
             screen = to
         }
@@ -50,6 +60,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     enum class Screen{
-        HOME, PROFILE, ADD
+        HOME, PROFILE, ADD, POST
     }
 }

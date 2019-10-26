@@ -7,8 +7,15 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.LinearLayout
+import android.widget.TextView
+import com.google.firebase.Timestamp
 import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.firestore.FirebaseFirestore
+import java.time.Duration
+import java.time.Instant
+import java.util.*
 
 /**
  * A simple [Fragment] subclass.
@@ -19,13 +26,22 @@ class Home : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false)
+        val v = inflater.inflate(R.layout.fragment_home, container, false)
+
+        v.findViewById<Button>(R.id.toAdd).setOnClickListener {
+            (activity as MainActivity).goTo(MainActivity.Screen.ADD)
+        }
+
+        return v
     }
 
     override fun onStart() {
         super.onStart()
 
+        val twoDaysAgo = Date.from(Instant.now().minus(Duration.ofDays(2)))
+
         db.collection("posts")
+            .whereGreaterThan("timestamp", Timestamp(twoDaysAgo))
             .addSnapshotListener { value, e ->
                 if (e != null) {
                     Log.w("HOME", "Listen failed.", e)
@@ -48,7 +64,20 @@ class Home : Fragment() {
     }
 
     private fun updateUI() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        val sorted = posts.filter { it.value.timestamp != null }.toList().sortedByDescending { (_, value) ->
+            (value.timestamp!!.seconds / 3600) + value.likes + value.comments
+        }.toMap()
+
+        view?.let {
+            val linear = it.findViewById<LinearLayout>(R.id.posts)
+            linear.removeAllViews()
+
+            for(p in sorted){
+                val tv = TextView(context)
+                tv.text = p.value.text
+                linear.addView(tv)
+            }
+        }
     }
 
 }
