@@ -1,5 +1,6 @@
 {
     "scripts": {
-        "deploy": "npm run build --prefix fama-web && (cd firebase && firebase deploy)"
+        "deploy": "npm run build --prefix fama-web && (cd firebase && firebase deploy)",
+        "serve": "npm run serve --prefix fama-web"
     }
 }

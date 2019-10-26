@@ -19,6 +19,7 @@ button{
 
 .corner{
     position: fixed;
+    z-index: 5;
     bottom: 20px;
     right: 20px;
 }
