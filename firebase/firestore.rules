@@ -23,8 +23,5 @@ service cloud.firestore {
     match /users/{uid}/{document=**} {
       allow read, create: if request.auth.uid == uid;
     }
-    match /postsAndroid/{id}{
-      allow read, write;
-    }
   }
 }
