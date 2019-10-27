@@ -16,6 +16,8 @@ import com.google.firebase.firestore.FirebaseFirestore
 import java.time.Duration
 import java.time.Instant
 import java.util.*
+import com.google.firebase.perf.FirebasePerformance;
+import com.google.firebase.perf.metrics.Trace;
 
 /**
  * A simple [Fragment] subclass.
@@ -23,6 +25,7 @@ import java.util.*
 class Home : Fragment() {
     val db = FirebaseFirestore.getInstance()
     val posts = mutableMapOf<String, Post>()
+    var doTrace = true
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
@@ -40,6 +43,9 @@ class Home : Fragment() {
 
         val twoDaysAgo = Date.from(Instant.now().minus(Duration.ofDays(2)))
 
+        val myTrace = FirebasePerformance.getInstance().newTrace("initialPostsLoading")
+        myTrace.start()
+        doTrace = true
         db.collection("posts")
             .whereGreaterThan("timestamp", Timestamp(twoDaysAgo))
             .addSnapshotListener { value, e ->
@@ -48,6 +54,11 @@ class Home : Fragment() {
                     return@addSnapshotListener
                 }
 
+                if(doTrace) {
+                    myTrace.incrementMetric("numberOfPosts", value!!.documentChanges.size.toLong())
+                    myTrace.stop()
+                    doTrace = false
+                }
                 for (doc in value!!.documentChanges) {
                     when(doc.type){
                         DocumentChange.Type.ADDED, DocumentChange.Type.MODIFIED -> {

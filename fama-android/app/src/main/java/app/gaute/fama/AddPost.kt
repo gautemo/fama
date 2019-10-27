@@ -28,6 +28,7 @@ class AddPost : Fragment() {
 
             FirebaseFirestore.getInstance().collection("posts").add(post)
                 .addOnSuccessListener {
+                    (activity as MainActivity).logEvent("add_post")
                     (activity as MainActivity).goTo(MainActivity.Screen.POST, it.id)
                 }
                 .addOnFailureListener {e ->
