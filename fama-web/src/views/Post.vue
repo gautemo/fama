@@ -9,7 +9,7 @@
             </ul>
         </div>
         <div class="input-wrapper">
-            <input type="text" v-model="resp" placeholder="Comment something cool.." maxlength="200"/>
+            <input type="text" v-model="resp" placeholder="Comment something cool.." maxlength="200" @keyup.enter="comment"/>
             <AddButton size="35" :corner="false" v-on:clicked="comment"/>
         </div>
     </section>
