@@ -6,7 +6,7 @@
             <div class="list posts">
                 <h3>My posts</h3>
                 <ul>
-                    <li v-for="post in posts" :key="post.id" @click="$router.push(`post/${post.id}`)">
+                    <li v-for="post in posts" :key="post.id" @click="$router.push(`/post/${post.id}`)">
                         {{post.text}}
                     </li>
                 </ul>
@@ -14,7 +14,7 @@
             <div class="list comments">
                 <h3>My comments</h3>
                 <ul>
-                    <li v-for="comment in comments" :key="comment.id" @click="$router.push(`post/${comment.postId}`)">
+                    <li v-for="comment in comments" :key="comment.id" @click="$router.push(`/post/${comment.postId}`)">
                         {{comment.text}}
                     </li>
                 </ul>
@@ -119,10 +119,14 @@ export default {
         },
         signOut(){
             firebase.auth().signOut();
+            firebase.auth().signInAnonymously();
+            this.signedIn = false;
         },
         deleteAccount(){
             firebase.auth().currentUser.delete().then(function() {
                 logEvent('user_deleted');
+                firebase.auth().signInAnonymously();
+                this.signedIn = false;
             }).catch(function(error) {
                 alert('Could not delete account, only recently signed in accounts can be deleted. Please try to sign out, sign in and delete again.');
             });

@@ -40,6 +40,7 @@ export default {
     align-items: center;
     color: white;
     cursor: pointer;
+    width: fit-content;
 }
 
 svg{

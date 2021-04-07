@@ -58,7 +58,7 @@ export default {
             const ref = await db.collection('posts').add(post);
             const uid = firebase.auth().currentUser.uid;
             await db.collection('users').doc(uid).collection('posts').doc(ref.id).set({timestamp: firebase.firestore.FieldValue.serverTimestamp()});
-            this.$router.push(`post/${ref.id}`);
+            this.$router.push(`/post/${ref.id}`);
         }
     }
 }

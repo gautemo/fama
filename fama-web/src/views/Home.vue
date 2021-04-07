@@ -5,11 +5,13 @@
         <PostDisplay :id="post.id" :post="post" :inComment="false"  class="post"/>
       </li>
     </ul>
-    <AddButton size="50" :corner="true" v-on:clicked="$router.push('add-post')"/>
+    <AddButton size="50" :corner="true" v-on:clicked="$router.push('/add-post')"/>
   </section>
 </template>
 
 <script>
+import AddButton from '@/components/AddButton';
+import PostDisplay from '@/components/PostDisplay';
 import { perf, default as firebase } from '@/firebaseinit';
 const db = firebase.firestore();
 
@@ -53,8 +55,8 @@ export default {
       }
     },
     components: {
-        AddButton: () => import('@/components/AddButton'),
-        PostDisplay: () => import('@/components/PostDisplay')
+        AddButton,
+        PostDisplay
     }
 }
 </script>

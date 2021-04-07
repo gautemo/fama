@@ -1,6 +1,7 @@
 {
     "scripts": {
         "deploy": "npm run build --prefix fama-web && (cd firebase && firebase deploy)",
-        "serve": "npm run serve --prefix fama-web"
+        "serve": "npm run serve --prefix fama-web",
+        "postinstall": "cd fama-web && npm i && cd .. && cd firebase/functions && npm i"
     }
 }

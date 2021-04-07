@@ -1,36 +1,35 @@
-import Vue from 'vue'
-import Router from 'vue-router'
+import { createRouter, createWebHistory, onBeforeRouteLeave } from 'vue-router'
 import Home from './views/Home.vue'
 import firebase from '@/firebaseinit';
 
-Vue.use(Router)
+const routes = [
+  {
+    path: '/',
+    component: Home
+  },
+  {
+    path: '/profile',
+    component: () => import('./views/Profile.vue')
+  },
+  {
+    path: '/post/:id',
+    component: () => import('./views/Post.vue')
+  },
+  {
+    path: '/add-post',
+    component: () => import('./views/AddPost.vue')
+  },
+];
 
-const router = new Router({
-  mode: 'history',
-  base: process.env.BASE_URL,
-  routes: [
-    {
-      path: '/',
-      component: Home
-    },
-    {
-      path: '/profile',
-      component: () => import('./views/Profile.vue')
-    },
-    {
-      path: '/post/:id',
-      component: () => import('./views/Post.vue')
-    },
-    {
-      path: '/add-post',
-      component: () => import('./views/AddPost.vue')
-    }
-  ]
+const router = createRouter({
+  history: createWebHistory(),
+  routes
 })
 
-router.beforeEach(async (to, from, next) => {
-  await firebase.auth().signInAnonymously();
-  next();
+router.beforeEach(async () => {
+  if(!await firebase.getCurrentUser()){
+    await firebase.auth().signInAnonymously();
+  }
 })
 
-export default router;
+export { router };

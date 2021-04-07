@@ -16,6 +16,8 @@
 </template>
 
 <script>
+import AddButton from '@/components/AddButton';
+import PostDisplay from '@/components/PostDisplay';
 import { logEvent, default as firebase } from '@/firebaseinit';
 const db = firebase.firestore();
 
@@ -72,8 +74,8 @@ export default {
         }
     },
     components: {
-        AddButton: () => import('@/components/AddButton'),
-        PostDisplay: () => import('@/components/PostDisplay')
+        AddButton,
+        PostDisplay,
     }
 }
 </script>

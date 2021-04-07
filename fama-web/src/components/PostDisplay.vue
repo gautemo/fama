@@ -9,6 +9,11 @@
 </template>
 
 <script>
+import AddButton from '@/components/AddButton';
+import LikeButton from '@/components/LikeButton';
+import CommentCounter from '@/components/CommentCounter';
+import PostDisplay from '@/components/PostDisplay';
+import Report from '@/components/Report';
 import { logEvent, remoteConfig, default as firebase } from '@/firebaseinit'
 const db = firebase.firestore();
 
@@ -48,16 +53,16 @@ export default {
       },
       toPost(){
           if(!this.inComment){
-              this.$router.push(`post/${this.id}`)
+              this.$router.push(`/post/${this.id}`)
           }
       }
     },
     components: {
-        AddButton: () => import('@/components/AddButton'),
-        LikeButton: () => import('@/components/LikeButton'),
-        CommentCounter: () => import('@/components/CommentCounter'),
-        PostDisplay: () => import('@/components/PostDisplay'),
-        Report: () => import('@/components/Report')
+        AddButton,
+        LikeButton,
+        CommentCounter,
+        PostDisplay,
+        Report,
     }
 }
 </script>
@@ -102,7 +107,7 @@ img{
     object-fit: cover;
 }
 
-article >>> :not(img){
+article :deep(:not(img)){
     z-index: 1;
 }
 

@@ -1,4 +1,4 @@
-import * as firebase from "firebase/app";
+import firebase from "firebase/app";
 import "firebase/analytics";
 import "firebase/firestore";
 import "firebase/storage";
@@ -39,5 +39,14 @@ firebase.auth().onAuthStateChanged(function (user) {
         firebase.analytics().setUserId(user.uid);
     }
 });
+
+firebase.getCurrentUser = () => {
+    return new Promise((resolve, reject) => {
+        const unsubscribe = firebase.auth().onAuthStateChanged(user => {
+            unsubscribe();
+            resolve(user);
+        }, reject);
+    })
+};
 
 export { logEvent, perf, remoteConfig, firebase as default };
