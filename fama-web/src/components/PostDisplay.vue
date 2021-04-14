@@ -1,7 +1,7 @@
 <template>
     <article @click="toPost" :class="{ big: img && inComment }">
         <p :class="{ cut: !inComment, hover: img }" v-if="!img || inComment">{{post.text}}</p>
-        <LikeButton class="like" size="30" v-on:clicked="like" :likes="post.likes"/>
+        <LikeButton class="like" size="30" v-on:clicked="like" :likes="post.likes + liked"/>
         <CommentCounter v-if="!inComment" size="20" :count="post.comments" @click="toPost" />
         <Report size="20" v-if="inComment && !reported && allowReport" v-on:clicked="report" />
         <img v-if="img" :src="img" :class="{ blur: !inComment }"/>
@@ -23,7 +23,8 @@ export default {
         return{
             reported: false,
             allowReport: true,
-            loadedImg: ''
+            loadedImg: '',
+            liked: 0,
         }
     },
     computed:{
@@ -45,6 +46,7 @@ export default {
     methods: {
       like(){
         db.collection('posts').doc(this.id).update({ likes: firebase.firestore.FieldValue.increment(1) });
+        if(this.inComment) this.liked = 1;
         logEvent('add_like');
       },
       report(){
